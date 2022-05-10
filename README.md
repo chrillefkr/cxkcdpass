@@ -130,7 +130,23 @@ user    0m0.008s
 sys     0m0.006s
 ```
 
-So cxkcdpass is approximately ~400 % faster than xkcdpass. Yaay! Can we make it
+And testing with a million (1 000 000) words:
+
+```
+$ time xkcdpass -n 1000000 >/dev/null
+
+real    0m7.954s
+user    0m7.546s
+sys     0m0.397s
+
+$ time cxkcdpass -n 1000000 >/dev/null
+
+real    0m1.606s
+user    0m1.035s
+sys     0m1.898s
+```
+
+So cxkcdpass is approximately 4-5 times faster than xkcdpass. Yaay! Can we make it
 faster though?
 
 # Contributing
