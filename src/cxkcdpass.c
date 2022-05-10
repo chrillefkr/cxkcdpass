@@ -1,5 +1,5 @@
 #include <stdio.h> // fprintf()
-#include <stdlib.h> // malloc(), free(), arc4random_uniform()
+#include <stdlib.h> // malloc(), free(), arc4random_uniform() [mac/bsd]
 #include <string.h> // strlen(), strdup()
 #include <wordexp.h> // wordexp_t, wordexp(), wordfree()
 #include <sys/stat.h> // stat, fstat()
@@ -7,8 +7,26 @@
 #include <sys/mman.h> // mmap()
 #include <fcntl.h> // open(), O_RDONLY
 #include <errno.h> // errno
-
 #include <regex.h> // regex_t, regcomp, regexec, regfree, regerror
+
+#define _RANDOM_METHOD_SODIUM 0
+#define _RANDOM_METHOD_ARC4RANDOM 1
+
+#if defined(__MACH__)
+#define RANDOM_METHOD _RANDOM_METHOD_ARC4RANDOM
+#elif defined(linux) || defined(__linux__)
+// arc4random is included in stdlib BSD/MacOS, and in libbsd for Linux.
+// But I prefer to use sodium instead.
+// #include <bsd/stdlib.h> // arc4random_uniform()
+#define RANDOM_METHOD _RANDOM_METHOD_SODIUM
+#else
+#define RANDOM_METHOD _RANDOM_METHOD_SODIUM
+#endif
+
+#if RANDOM_METHOD == _RANDOM_METHOD_SODIUM
+#define USE_SODIUM 1
+#include <sodium.h>
+#endif
 
 #include "cmdline.h"
 
@@ -22,6 +40,13 @@ size_t linelen(char* line) {
   return i;
 }
 
+inline int generate_random_number(int num) {
+#if RANDOM_METHOD == _RANDOM_METHOD_ARC4RANDOM
+  return arc4random_uniform(num);
+#elif RANDOM_METHOD == _RANDOM_METHOD_SODIUM
+  return randombytes_uniform(num);
+#endif
+}
 
 
 int validate_options(struct gengetopt_args_info ai) {
@@ -271,9 +296,9 @@ int generate_wordlist2(char* wordfile, struct gengetopt_args_info ai) {
 int* get_random_choices(int min_amount, int max_amount, int min_value, int max_value){
   int a_diff = max_amount - min_amount;
   int v_diff = max_value - min_value;
-  int amount = min_amount + (a_diff == 0 ? 0 : arc4random_uniform(a_diff));
+  int amount = min_amount + (a_diff == 0 ? 0 : generate_random_number(a_diff));
   int* out = (int*) malloc((amount + 1) * sizeof(int));
-  for (int i = 0; i < amount; i++) out[i] = min_value + (v_diff == 0 ? 0 : arc4random_uniform(v_diff));
+  for (int i = 0; i < amount; i++) out[i] = min_value + (v_diff == 0 ? 0 : generate_random_number(v_diff));
   out[amount] = -1;
   return out;
 }
@@ -295,6 +320,12 @@ int main(int argc, char* argv[]) {
   if (cmdline_parser(argc, argv, &ai) != 0) {
     return 2;
   }
+  #if USE_SODIUM
+  if (sodium_init() < 0) {
+    fprintf(stderr, "Fatal: Could not initialize sodium RNG.\n");
+    return 1;
+  }
+  #endif
   if (validate_options(ai) != 0) {
     return 2;
   }
