@@ -2,6 +2,8 @@ version "0.0.1"
 package "cxkcdpass"
 purpose "Generate random passphrases from a wordfile"
 
+args "--no-handle-help --include-getopt"
+
 # Options
 option "wordfile" w "\
 Specify that the file WORDFILE contains the list of valid words from which to \

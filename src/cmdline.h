@@ -69,9 +69,9 @@ struct gengetopt_args_info
   const char *delim_help; /**< @brief Separate words within a passphrase with DELIM. help description.  */
   int random_delimiters_flag;	/**< @brief Use randomized delimiters between words. --delimiter will be ignored (default=off).  */
   const char *random_delimiters_help; /**< @brief Use randomized delimiters between words. --delimiter will be ignored help description.  */
-  char * valid_delimiters_arg;	/**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or * (default='!@#$%^&*()0123456789').  */
-  char * valid_delimiters_orig;	/**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or * original value given at command line.  */
-  const char *valid_delimiters_help; /**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or * help description.  */
+  char * valid_delimiters_arg;	/**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. (default='!@#$%^&*()0123456789').  */
+  char * valid_delimiters_orig;	/**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. original value given at command line.  */
+  const char *valid_delimiters_help; /**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. help description.  */
   char * sep_arg;	/**< @brief Separate generated passphrases with SEP..  */
   char * sep_orig;	/**< @brief Separate generated passphrases with SEP. original value given at command line.  */
   const char *sep_help; /**< @brief Separate generated passphrases with SEP. help description.  */

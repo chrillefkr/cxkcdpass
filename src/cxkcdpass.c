@@ -32,7 +32,7 @@ int validate_options(struct gengetopt_args_info ai) {
   if (
     // ai.min_given ||
     // ai.max_given ||
-    ai.numwords_given ||
+    // ai.numwords_given ||
     ai.acrostic_given ||
     ai.interactive_given ||
     // ai.regex_match_given ||
@@ -60,6 +60,7 @@ char* locate_wordfile(char* wordfile, struct gengetopt_args_info ai) {
   }
   for (int i = 0; i < exp_result.we_wordc; i++) {
     int stat_res = stat(exp_result.we_wordv[i], &st);
+    // Check if file is a regular file on disk, as mmap doesn't support anything else
     if (stat_res != 0 || !S_ISREG(st.st_mode)) {
       if (ai.wordfile_given) {
         if (stat_res != 0) stat_error_msgs[i] = strdup(strerror(errno));
@@ -75,6 +76,7 @@ char* locate_wordfile(char* wordfile, struct gengetopt_args_info ai) {
     return strdup(exp_result.we_wordv[i]);
   }
 
+  // if run with -w/--wordfile, let user know we couldn't find the file, and why
   if (ai.wordfile_given) {
     if (exp_result.we_wordc == 0) fprintf(stderr, "Warning: Can't find file '%s': unknown error, please report it as a bug\n", wordfile);
     else if (exp_result.we_wordc == 1) {
@@ -311,6 +313,5 @@ int main(int argc, char* argv[]) {
   int* wordlist_choices = get_random_choices(ai.numwords_arg, ai.numwords_arg, 0, wl.length);
   print_passphrase(wordlist_choices, wl.lines, NULL);
   munmap(mw.addr, mw.length);
-  // generate_wordlist(wordfile, ai);
   return 0;
 }

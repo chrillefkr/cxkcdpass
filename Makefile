@@ -1,8 +1,9 @@
+CC="gcc"
 
-all: cxkcdpass cmdline.c cmdline.h
+all: cxkcdpass src/cmdline.c src/cmdline.h
 
-cxkcdpass: cmdline.c cmdline.h cxkcdpass.c
-	@gcc -O2 cmdline.c cxkcdpass.c -o cxkcdpass
+cxkcdpass: src/cmdline.c src/cmdline.h src/cxkcdpass.c
+	$(CC) -O2 src/cmdline.c src/cxkcdpass.c -o cxkcdpass
 
-cmdline.c cmdline.h: cxkcdpass.ggo
-	@gengetopt -i cxkcdpass.ggo -G
+src/cmdline.c src/cmdline.h: cxkcdpass.ggo
+	gengetopt --input=cxkcdpass.ggo --output-dir=./src/
