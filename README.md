@@ -40,7 +40,7 @@ $ # sudo make install
 OS needs to be some modern MacOS/Linux, because of mmap, wordexp, arc4random,
 etc. until cxkcdpass has been adopted to work on Windows.
 
-Wordlists are not included yet. There are some available for grabs at the 
+Wordlists are not included yet. There are some available for grabs at the
 [xkcdpass](https://github.com/redacted/XKCD-password-generator/tree/master/xkcdpass/static) repository.
 You can specify wordlist with the `--wordfile` parameter.
 cxkcdpass will look for wordlists in the following order:
@@ -78,7 +78,7 @@ Generate random passphrases from a wordfile
                                   least MIN_LENGTH characters.  (default=`5')
   -M, --max=MAX_LENGTH          Generate passphrases containing words with at
                                   most MAX_LENGTH characters.  (default=`9')
-  -n, --numwords=NUM_WORDS      Generate passphrases containing exactly
+  -n, --num-words=NUM_WORDS     Generate passphrases containing exactly
                                   NUM_WORDS words.  (default=`6')
   -a, --acrostic=ACROSTIC       Generate passphrases with an acrostic matching
                                   ACROSTIC.
@@ -113,6 +113,7 @@ I hope cxkcdpass will be faster, smaller and in general more optimized and
 efficient than the Python counterpart. Otherwise, it's no fun coding in C.
 
 Tested on my MacBook Pro (Late 2013, x86_64), compiled with `Apple clang version 13.0.0 (clang-1300.0.29.30)`.
+
 ```
 $ time xkcdpass
 subheader grant spearfish employer linguini defacing

@@ -50,9 +50,9 @@ struct gengetopt_args_info
   int max_arg;	/**< @brief Generate passphrases containing words with at most MAX_LENGTH characters. (default='9').  */
   char * max_orig;	/**< @brief Generate passphrases containing words with at most MAX_LENGTH characters. original value given at command line.  */
   const char *max_help; /**< @brief Generate passphrases containing words with at most MAX_LENGTH characters. help description.  */
-  int numwords_arg;	/**< @brief Generate passphrases containing exactly NUM_WORDS words. (default='6').  */
-  char * numwords_orig;	/**< @brief Generate passphrases containing exactly NUM_WORDS words. original value given at command line.  */
-  const char *numwords_help; /**< @brief Generate passphrases containing exactly NUM_WORDS words. help description.  */
+  int num_words_arg;	/**< @brief Generate passphrases containing exactly NUM_WORDS words. (default='6').  */
+  char * num_words_orig;	/**< @brief Generate passphrases containing exactly NUM_WORDS words. original value given at command line.  */
+  const char *num_words_help; /**< @brief Generate passphrases containing exactly NUM_WORDS words. help description.  */
   char * acrostic_arg;	/**< @brief Generate passphrases with an acrostic matching ACROSTIC..  */
   char * acrostic_orig;	/**< @brief Generate passphrases with an acrostic matching ACROSTIC. original value given at command line.  */
   const char *acrostic_help; /**< @brief Generate passphrases with an acrostic matching ACROSTIC. help description.  */
@@ -86,7 +86,7 @@ struct gengetopt_args_info
   unsigned int wordfile_given ;	/**< @brief Whether wordfile was given.  */
   unsigned int min_given ;	/**< @brief Whether min was given.  */
   unsigned int max_given ;	/**< @brief Whether max was given.  */
-  unsigned int numwords_given ;	/**< @brief Whether numwords was given.  */
+  unsigned int num_words_given ;	/**< @brief Whether num-words was given.  */
   unsigned int acrostic_given ;	/**< @brief Whether acrostic was given.  */
   unsigned int interactive_given ;	/**< @brief Whether interactive was given.  */
   unsigned int regex_match_given ;	/**< @brief Whether regex-match was given.  */

@@ -341,8 +341,9 @@ int main(int argc, char* argv[]) {
   if (generate_wordlist(mw.addr, mw.length, ai, &wl) != 0) {
     return 1;
   }
-  int* wordlist_choices = get_random_choices(ai.numwords_arg, ai.numwords_arg, 0, wl.length);
+  int* wordlist_choices = get_random_choices(ai.num_words_arg, ai.num_words_arg, 0, wl.length);
   print_passphrase(wordlist_choices, wl.lines, NULL);
   munmap(mw.addr, mw.length);
+  cmdline_parser_free(&ai);
   return 0;
 }

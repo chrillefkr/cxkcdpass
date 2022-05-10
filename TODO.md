@@ -22,7 +22,8 @@
 mmap for supporting other filetypes than "regular" files on disk
 (e.g. pipes, fifo).
 * Shell completion
-  * bash: `$ complete -C "$(which cxkcdpass) --completion='bash'" cxkcdpass`
+  * bash
+    * Fix list of included wordfiles
   * zsh: https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org
 * CLI argument validation
   * Handle if integers are out of range (e.g. below zero)
