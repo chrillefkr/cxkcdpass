@@ -27,8 +27,13 @@ endif
 
 all: cxkcdpass src/cmdline.c src/cmdline.h
 
-cxkcdpass: src/cmdline.c src/cmdline.h src/cxkcdpass.c
-	$(CC) -O2 src/cmdline.c src/cxkcdpass.c -o cxkcdpass $(CCFLAGS)
+cxkcdpass: src/*.c src/*.h
+	$(CC) -O2 src/*.c -o cxkcdpass $(CCFLAGS)
 
 src/cmdline.c src/cmdline.h: cxkcdpass.ggo
 	gengetopt --input=cxkcdpass.ggo --output-dir=./src/
+
+.PHONY: list-defines
+list-defines:
+	cd src
+	cat src/cmdline.c src/cmdline.h src/cxkcdpass.c | gcc -dM -E -
