@@ -295,17 +295,22 @@ int main(int argc, char* argv[]) {
   char* wordfile = locate_wordfile(ai.wordfile_arg, ai);
   if (wordfile == NULL) {
     fprintf(stderr, "Error: Could not find a word file.\n");
+    return 1;
   }
   struct mmap_wordfile_t mw;
   if (mmap_wordfile(wordfile, &mw) != 0) {
+    free(wordfile);
     return 1;
   }
+  free(wordfile);
   struct wordlist_t wl;
   if (generate_wordlist(mw.addr, mw.length, ai, &wl) != 0) {
     return 1;
   }
   int* wordlist_choices = get_random_choices(ai.num_words_arg, ai.num_words_arg, 0, wl.length);
   print_passphrase(wordlist_choices, wl.lines, NULL);
+  free(wordlist_choices);
+  free(wl.lines);
   munmap(mw.addr, mw.length);
   cmdline_parser_free(&ai);
   return 0;

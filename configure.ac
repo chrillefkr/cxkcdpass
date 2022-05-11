@@ -9,8 +9,6 @@ AC_CONFIG_FILES([
  contrib/bash_completion.d/Makefile
 ])
 
-LIBS="-lsodium $LIBS"
-
 # Create --with-libsodium=prefix argument to specify libsodium path for configure script
 AC_ARG_WITH([libsodium],
   [AS_HELP_STRING([--with-libsodium=prefix],
@@ -24,6 +22,7 @@ if test $LIBSODIUMPATHSET = 0 ; then
 else
   AM_CFLAGS="$AM_CFLAGS -I$with_libsodium/include"
   AM_LDFLAGS="$AM_LDFLAGS -L$with_libsodium/lib"
+  LIBS="-lsodium $LIBS"
 fi
 
 AC_SUBST([AM_CFLAGS])
