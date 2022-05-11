@@ -6,7 +6,7 @@ AC_PROG_CC
 AC_CONFIG_FILES([
  Makefile
  src/Makefile
- contrib/bash_completion.d/Makefile
+ data/bash_completion.d/Makefile
 ])
 
 # Create --with-libsodium=prefix argument to specify libsodium path for configure script
