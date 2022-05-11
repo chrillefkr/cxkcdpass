@@ -1,5 +1,5 @@
 # Build output
-cxkcdpass
+build/*
 
 # Object files
 *.o

@@ -26,7 +26,7 @@
 
 const char *gengetopt_args_info_purpose = "Generate random passphrases from a wordfile";
 
-const char *gengetopt_args_info_usage = "Usage: cxkcdpass [OPTION]...";
+const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [OPTION]...";
 
 const char *gengetopt_args_info_versiontext = "";
 
@@ -46,9 +46,9 @@ const char *gengetopt_args_info_help[] = {
   "  -d, --delim=DELIM             Separate words within a passphrase with DELIM.\n                                  (default=` ')",
   "  -R, --random-delimiters       Use randomized delimiters between words.\n                                  --delimiter will be ignored  (default=off)",
   "  -D, --valid-delimiters=VALID_DELIMITERS\n                                A string with all valid delimiter characters.\n                                  For example, '^&*' would use ^, &, or *.\n                                  (default=`!@#$%^&*()0123456789')",
-  "  -s, --sep=SEP                 Separate generated passphrases with SEP.",
+  "  -s, --separator=SEP           Separate generated passphrases with SEP.",
   "  -C, --case=ENUM               Choose the method for setting the case of each\n                                  word in the passphrase.  (possible\n                                  values=\"initial\", \"alternating\",\n                                  \"upper\", \"lower\", \"random\", \"first\",\n                                  \"capitalize\" default=`initial')",
-  "  -v, --verbose                 Report various metrics for given options.\n                                  (default=off)",
+  "  -v, --verbose                 Report various metrics for given options and\n                                  general verbose output.  (default=off)",
     0
 };
 
@@ -90,7 +90,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->delim_given = 0 ;
   args_info->random_delimiters_given = 0 ;
   args_info->valid_delimiters_given = 0 ;
-  args_info->sep_given = 0 ;
+  args_info->separator_given = 0 ;
   args_info->case_given = 0 ;
   args_info->verbose_given = 0 ;
 }
@@ -118,8 +118,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->random_delimiters_flag = 0;
   args_info->valid_delimiters_arg = gengetopt_strdup ("!@#$%^&*()0123456789");
   args_info->valid_delimiters_orig = NULL;
-  args_info->sep_arg = NULL;
-  args_info->sep_orig = NULL;
+  args_info->separator_arg = NULL;
+  args_info->separator_orig = NULL;
   args_info->case_arg = case_arg_initial;
   args_info->case_orig = NULL;
   args_info->verbose_flag = 0;
@@ -144,7 +144,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->delim_help = gengetopt_args_info_help[10] ;
   args_info->random_delimiters_help = gengetopt_args_info_help[11] ;
   args_info->valid_delimiters_help = gengetopt_args_info_help[12] ;
-  args_info->sep_help = gengetopt_args_info_help[13] ;
+  args_info->separator_help = gengetopt_args_info_help[13] ;
   args_info->case_help = gengetopt_args_info_help[14] ;
   args_info->verbose_help = gengetopt_args_info_help[15] ;
   
@@ -250,8 +250,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->delim_orig));
   free_string_field (&(args_info->valid_delimiters_arg));
   free_string_field (&(args_info->valid_delimiters_orig));
-  free_string_field (&(args_info->sep_arg));
-  free_string_field (&(args_info->sep_orig));
+  free_string_field (&(args_info->separator_arg));
+  free_string_field (&(args_info->separator_orig));
   free_string_field (&(args_info->case_orig));
   
   
@@ -350,8 +350,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "random-delimiters", 0, 0 );
   if (args_info->valid_delimiters_given)
     write_into_file(outfile, "valid-delimiters", args_info->valid_delimiters_orig, 0);
-  if (args_info->sep_given)
-    write_into_file(outfile, "sep", args_info->sep_orig, 0);
+  if (args_info->separator_given)
+    write_into_file(outfile, "separator", args_info->separator_orig, 0);
   if (args_info->case_given)
     write_into_file(outfile, "case", args_info->case_orig, cmdline_parser_case_values);
   if (args_info->verbose_given)
@@ -1228,7 +1228,7 @@ cmdline_parser_internal (
         { "delim",	1, NULL, 'd' },
         { "random-delimiters",	0, NULL, 'R' },
         { "valid-delimiters",	1, NULL, 'D' },
-        { "sep",	1, NULL, 's' },
+        { "separator",	1, NULL, 's' },
         { "case",	1, NULL, 'C' },
         { "verbose",	0, NULL, 'v' },
         { 0,  0, 0, 0 }
@@ -1391,11 +1391,11 @@ cmdline_parser_internal (
         case 's':	/* Separate generated passphrases with SEP..  */
         
         
-          if (update_arg( (void *)&(args_info->sep_arg), 
-               &(args_info->sep_orig), &(args_info->sep_given),
-              &(local_args_info.sep_given), optarg, 0, 0, ARG_STRING,
+          if (update_arg( (void *)&(args_info->separator_arg), 
+               &(args_info->separator_orig), &(args_info->separator_given),
+              &(local_args_info.separator_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
-              "sep", 's',
+              "separator", 's',
               additional_error))
             goto failure;
         
@@ -1412,7 +1412,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'v':	/* Report various metrics for given options..  */
+        case 'v':	/* Report various metrics for given options and general verbose output..  */
         
         
           if (update_arg((void *)&(args_info->verbose_flag), 0, &(args_info->verbose_given),

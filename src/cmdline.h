@@ -21,17 +21,21 @@ extern "C" {
 
 #ifndef CMDLINE_PARSER_PACKAGE
 /** @brief the program name (used for printing errors) */
-#define CMDLINE_PARSER_PACKAGE "cxkcdpass"
+#define CMDLINE_PARSER_PACKAGE PACKAGE
 #endif
 
 #ifndef CMDLINE_PARSER_PACKAGE_NAME
 /** @brief the complete program name (used for help and version) */
-#define CMDLINE_PARSER_PACKAGE_NAME "cxkcdpass"
+#ifdef PACKAGE_NAME
+#define CMDLINE_PARSER_PACKAGE_NAME PACKAGE_NAME
+#else
+#define CMDLINE_PARSER_PACKAGE_NAME PACKAGE
+#endif
 #endif
 
 #ifndef CMDLINE_PARSER_VERSION
 /** @brief the program version */
-#define CMDLINE_PARSER_VERSION "0.0.1"
+#define CMDLINE_PARSER_VERSION VERSION
 #endif
 
 enum enum_case { case__NULL = -1, case_arg_initial = 0, case_arg_alternating, case_arg_upper, case_arg_lower, case_arg_random, case_arg_first, case_arg_capitalize };
@@ -72,14 +76,14 @@ struct gengetopt_args_info
   char * valid_delimiters_arg;	/**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. (default='!@#$%^&*()0123456789').  */
   char * valid_delimiters_orig;	/**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. original value given at command line.  */
   const char *valid_delimiters_help; /**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. help description.  */
-  char * sep_arg;	/**< @brief Separate generated passphrases with SEP..  */
-  char * sep_orig;	/**< @brief Separate generated passphrases with SEP. original value given at command line.  */
-  const char *sep_help; /**< @brief Separate generated passphrases with SEP. help description.  */
+  char * separator_arg;	/**< @brief Separate generated passphrases with SEP..  */
+  char * separator_orig;	/**< @brief Separate generated passphrases with SEP. original value given at command line.  */
+  const char *separator_help; /**< @brief Separate generated passphrases with SEP. help description.  */
   enum enum_case case_arg;	/**< @brief Choose the method for setting the case of each word in the passphrase. (default='initial').  */
   char * case_orig;	/**< @brief Choose the method for setting the case of each word in the passphrase. original value given at command line.  */
   const char *case_help; /**< @brief Choose the method for setting the case of each word in the passphrase. help description.  */
-  int verbose_flag;	/**< @brief Report various metrics for given options. (default=off).  */
-  const char *verbose_help; /**< @brief Report various metrics for given options. help description.  */
+  int verbose_flag;	/**< @brief Report various metrics for given options and general verbose output. (default=off).  */
+  const char *verbose_help; /**< @brief Report various metrics for given options and general verbose output. help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -94,7 +98,7 @@ struct gengetopt_args_info
   unsigned int delim_given ;	/**< @brief Whether delim was given.  */
   unsigned int random_delimiters_given ;	/**< @brief Whether random-delimiters was given.  */
   unsigned int valid_delimiters_given ;	/**< @brief Whether valid-delimiters was given.  */
-  unsigned int sep_given ;	/**< @brief Whether sep was given.  */
+  unsigned int separator_given ;	/**< @brief Whether separator was given.  */
   unsigned int case_given ;	/**< @brief Whether case was given.  */
   unsigned int verbose_given ;	/**< @brief Whether verbose was given.  */
 

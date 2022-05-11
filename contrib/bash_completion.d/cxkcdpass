@@ -1,3 +1,5 @@
+#/usr/bin/env bash
+
 shopt -s progcomp
 
 # You think this looks unsafe? Read the name backwards :)
@@ -76,4 +78,4 @@ _cxkcdpass_completion () {
     esac
 }
 
-complete -F _cxkcdpass_completion ./cxkcdpass
+complete -F _cxkcdpass_completion cxkcdpass

@@ -1,5 +1,3 @@
-version "0.0.1"
-package "cxkcdpass"
 purpose "Generate random passphrases from a wordfile"
 
 args "--no-handle-error --include-getopt"
@@ -24,7 +22,7 @@ option "count" c "Generate COUNT passphrases." int typestr="COUNT" optional
 option "delim" d "Separate words within a passphrase with DELIM." string typestr="DELIM" default=" " optional
 option "random-delimiters" R "Use randomized delimiters between words. --delimiter will be ignored" flag off
 option "valid-delimiters" D "A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *." string typestr="VALID_DELIMITERS" default="!@#$%^&*()0123456789" optional
-option "separator" s "Separate generated passphrases with SEP." string typestr="SEP" default="\n" optional
+option "separator" s "Separate generated passphrases with SEP." string typestr="SEP" optional
 option "case" C "Choose the method for setting the case of each word in the passphrase." values="initial","alternating","upper","lower","random","first","capitalize" enum default="initial" optional
 #option "allow-weak-rng" A "Allow fallback to weak RNG if the system does not support cryptographically secure RNG. Only use this if you know what you are doing." flag off
 option "verbose" v "Report various metrics for given options and general verbose output." flag off

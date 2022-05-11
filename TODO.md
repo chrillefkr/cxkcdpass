@@ -4,8 +4,6 @@
 
 * Comment code!
 * Implement all basic features
-* Implement autotools
-  * Install-scripts
 * Add wordlists
   * Include wordlists in installation
   * Figure out how program will know where wordlists are installed

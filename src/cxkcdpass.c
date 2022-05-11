@@ -65,7 +65,7 @@ int validate_options(struct gengetopt_args_info ai) {
     ai.delim_given ||
     ai.random_delimiters_given ||
     ai.valid_delimiters_given ||
-    ai.sep_given ||
+    ai.separator_given ||
     ai.case_given
   ) {
     fprintf(stderr, "Error: Passed arguments aren't supported yet. Sorry ¯\\_(ツ)_/¯\n");
