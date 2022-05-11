@@ -54,24 +54,7 @@ int validate_options(struct gengetopt_args_info ai) {
     ai.max_arg = ai.min_arg;
     fprintf(stderr, "Warning: maximum word length less than minimum. Setting maximum equal to minimum.\n");
   }
-  if (
-    // ai.min_given ||
-    // ai.max_given ||
-    // ai.numwords_given ||
-    ai.acrostic_given ||
-    ai.interactive_given ||
-    // ai.regex_match_given ||
-    ai.count_given ||
-    ai.delim_given ||
-    ai.random_delimiters_given ||
-    ai.valid_delimiters_given ||
-    ai.separator_given ||
-    ai.case_given
-  ) {
-    fprintf(stderr, "Error: Passed arguments aren't supported yet. Sorry ¯\\_(ツ)_/¯\n");
-    return -1;
-  }
-  // Make sure acrostic and numwords aren't both set
+  // TODO: Make sure acrostic and num-words aren't both set
   return 0;
 }
 

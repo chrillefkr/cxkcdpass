@@ -38,8 +38,6 @@ extern "C" {
 #define CMDLINE_PARSER_VERSION VERSION
 #endif
 
-enum enum_case { case__NULL = -1, case_arg_initial = 0, case_arg_alternating, case_arg_upper, case_arg_lower, case_arg_random, case_arg_first, case_arg_capitalize };
-
 /** @brief Where the command line options are stored */
 struct gengetopt_args_info
 {
@@ -57,31 +55,9 @@ struct gengetopt_args_info
   int num_words_arg;	/**< @brief Generate passphrases containing exactly NUM_WORDS words. (default='6').  */
   char * num_words_orig;	/**< @brief Generate passphrases containing exactly NUM_WORDS words. original value given at command line.  */
   const char *num_words_help; /**< @brief Generate passphrases containing exactly NUM_WORDS words. help description.  */
-  char * acrostic_arg;	/**< @brief Generate passphrases with an acrostic matching ACROSTIC..  */
-  char * acrostic_orig;	/**< @brief Generate passphrases with an acrostic matching ACROSTIC. original value given at command line.  */
-  const char *acrostic_help; /**< @brief Generate passphrases with an acrostic matching ACROSTIC. help description.  */
-  int interactive_flag;	/**< @brief Generate and output a passphrase, query the user to accept it, and loop until one is accepted. (default=off).  */
-  const char *interactive_help; /**< @brief Generate and output a passphrase, query the user to accept it, and loop until one is accepted. help description.  */
   char * regex_match_arg;	/**< @brief Limit passphrases to only include words matching the regex pattern REGEX (e.g. '^[a-z]*$')..  */
   char * regex_match_orig;	/**< @brief Limit passphrases to only include words matching the regex pattern REGEX (e.g. '^[a-z]*$'). original value given at command line.  */
   const char *regex_match_help; /**< @brief Limit passphrases to only include words matching the regex pattern REGEX (e.g. '^[a-z]*$'). help description.  */
-  int count_arg;	/**< @brief Generate COUNT passphrases..  */
-  char * count_orig;	/**< @brief Generate COUNT passphrases. original value given at command line.  */
-  const char *count_help; /**< @brief Generate COUNT passphrases. help description.  */
-  char * delim_arg;	/**< @brief Separate words within a passphrase with DELIM. (default=' ').  */
-  char * delim_orig;	/**< @brief Separate words within a passphrase with DELIM. original value given at command line.  */
-  const char *delim_help; /**< @brief Separate words within a passphrase with DELIM. help description.  */
-  int random_delimiters_flag;	/**< @brief Use randomized delimiters between words. --delimiter will be ignored (default=off).  */
-  const char *random_delimiters_help; /**< @brief Use randomized delimiters between words. --delimiter will be ignored help description.  */
-  char * valid_delimiters_arg;	/**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. (default='!@#$%^&*()0123456789').  */
-  char * valid_delimiters_orig;	/**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. original value given at command line.  */
-  const char *valid_delimiters_help; /**< @brief A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *. help description.  */
-  char * separator_arg;	/**< @brief Separate generated passphrases with SEP..  */
-  char * separator_orig;	/**< @brief Separate generated passphrases with SEP. original value given at command line.  */
-  const char *separator_help; /**< @brief Separate generated passphrases with SEP. help description.  */
-  enum enum_case case_arg;	/**< @brief Choose the method for setting the case of each word in the passphrase. (default='initial').  */
-  char * case_orig;	/**< @brief Choose the method for setting the case of each word in the passphrase. original value given at command line.  */
-  const char *case_help; /**< @brief Choose the method for setting the case of each word in the passphrase. help description.  */
   int verbose_flag;	/**< @brief Report various metrics for given options and general verbose output. (default=off).  */
   const char *verbose_help; /**< @brief Report various metrics for given options and general verbose output. help description.  */
   
@@ -91,15 +67,7 @@ struct gengetopt_args_info
   unsigned int min_given ;	/**< @brief Whether min was given.  */
   unsigned int max_given ;	/**< @brief Whether max was given.  */
   unsigned int num_words_given ;	/**< @brief Whether num-words was given.  */
-  unsigned int acrostic_given ;	/**< @brief Whether acrostic was given.  */
-  unsigned int interactive_given ;	/**< @brief Whether interactive was given.  */
   unsigned int regex_match_given ;	/**< @brief Whether regex-match was given.  */
-  unsigned int count_given ;	/**< @brief Whether count was given.  */
-  unsigned int delim_given ;	/**< @brief Whether delim was given.  */
-  unsigned int random_delimiters_given ;	/**< @brief Whether random-delimiters was given.  */
-  unsigned int valid_delimiters_given ;	/**< @brief Whether valid-delimiters was given.  */
-  unsigned int separator_given ;	/**< @brief Whether separator was given.  */
-  unsigned int case_given ;	/**< @brief Whether case was given.  */
   unsigned int verbose_given ;	/**< @brief Whether verbose was given.  */
 
 } ;
@@ -224,8 +192,6 @@ void cmdline_parser_free (struct gengetopt_args_info *args_info);
  */
 int cmdline_parser_required (struct gengetopt_args_info *args_info,
   const char *prog_name);
-
-extern const char *cmdline_parser_case_values[];  /**< @brief Possible values for case. */
 
 
 #ifdef __cplusplus

@@ -33,22 +33,14 @@ const char *gengetopt_args_info_versiontext = "";
 const char *gengetopt_args_info_description = "";
 
 const char *gengetopt_args_info_help[] = {
-  "  -h, --help                    Print help and exit",
-  "  -V, --version                 Print version and exit",
-  "  -w, --wordfile=WORDFILE       Specify that the file WORDFILE contains the\n                                  list of valid words from which to generate\n                                  passphrases. Multiple wordfiles can be\n                                  provided, separated by commas. Provided\n                                  wordfiles: eff-long, eff-short, eff-special,\n                                  legacy, spa-mich (Spanish), fin-kotus\n                                  (Finnish), fr-freelang (French),\n                                  fr-corrected.txt (French), pt-ipublicis\n                                  (Portuguese), ita-wiki (Italian), ger-anlx\n                                  (German), eff_large_de_sample.wordlist\n                                  (German), nor-nb (Norwegian)\n                                  (default=`eff-long')",
-  "  -m, --min=MIN_LENGTH          Generate passphrases containing words with at\n                                  least MIN_LENGTH characters.  (default=`5')",
-  "  -M, --max=MAX_LENGTH          Generate passphrases containing words with at\n                                  most MAX_LENGTH characters.  (default=`9')",
-  "  -n, --num-words=NUM_WORDS     Generate passphrases containing exactly\n                                  NUM_WORDS words.  (default=`6')",
-  "  -a, --acrostic=ACROSTIC       Generate passphrases with an acrostic matching\n                                  ACROSTIC.",
-  "  -i, --interactive             Generate and output a passphrase, query the\n                                  user to accept it, and loop until one is\n                                  accepted.  (default=off)",
-  "  -r, --regex-match=REGEX       Limit passphrases to only include words\n                                  matching the regex pattern REGEX (e.g.\n                                  '^[a-z]*$').",
-  "  -c, --count=COUNT             Generate COUNT passphrases.",
-  "  -d, --delim=DELIM             Separate words within a passphrase with DELIM.\n                                  (default=` ')",
-  "  -R, --random-delimiters       Use randomized delimiters between words.\n                                  --delimiter will be ignored  (default=off)",
-  "  -D, --valid-delimiters=VALID_DELIMITERS\n                                A string with all valid delimiter characters.\n                                  For example, '^&*' would use ^, &, or *.\n                                  (default=`!@#$%^&*()0123456789')",
-  "  -s, --separator=SEP           Separate generated passphrases with SEP.",
-  "  -C, --case=ENUM               Choose the method for setting the case of each\n                                  word in the passphrase.  (possible\n                                  values=\"initial\", \"alternating\",\n                                  \"upper\", \"lower\", \"random\", \"first\",\n                                  \"capitalize\" default=`initial')",
-  "  -v, --verbose                 Report various metrics for given options and\n                                  general verbose output.  (default=off)",
+  "  -h, --help                 Print help and exit",
+  "  -V, --version              Print version and exit",
+  "  -w, --wordfile=WORDFILE    Specify that the file WORDFILE contains the list\n                               of valid words from which to generate\n                               passphrases. Multiple wordfiles can be provided,\n                               separated by commas. Provided wordfiles:\n                               eff-long, eff-short, eff-special, legacy,\n                               spa-mich (Spanish), fin-kotus (Finnish),\n                               fr-freelang (French), fr-corrected.txt (French),\n                               pt-ipublicis (Portuguese), ita-wiki (Italian),\n                               ger-anlx (German), eff_large_de_sample.wordlist\n                               (German), nor-nb (Norwegian)\n                               (default=`eff-long')",
+  "  -m, --min=MIN_LENGTH       Generate passphrases containing words with at\n                               least MIN_LENGTH characters.  (default=`5')",
+  "  -M, --max=MAX_LENGTH       Generate passphrases containing words with at most\n                               MAX_LENGTH characters.  (default=`9')",
+  "  -n, --num-words=NUM_WORDS  Generate passphrases containing exactly NUM_WORDS\n                               words.  (default=`6')",
+  "  -r, --regex-match=REGEX    Limit passphrases to only include words matching\n                               the regex pattern REGEX (e.g. '^[a-z]*$').",
+  "  -v, --verbose              Report various metrics for given options and\n                               general verbose output.  (default=off)",
     0
 };
 
@@ -56,7 +48,6 @@ typedef enum {ARG_NO
   , ARG_FLAG
   , ARG_STRING
   , ARG_INT
-  , ARG_ENUM
 } cmdline_parser_arg_type;
 
 static
@@ -68,8 +59,6 @@ static int
 cmdline_parser_internal (int argc, char **argv, struct gengetopt_args_info *args_info,
                         struct cmdline_parser_params *params, const char *additional_error);
 
-
-const char *cmdline_parser_case_values[] = {"initial", "alternating", "upper", "lower", "random", "first", "capitalize", 0}; /*< Possible values for case. */
 
 static char *
 gengetopt_strdup (const char *s);
@@ -83,15 +72,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->min_given = 0 ;
   args_info->max_given = 0 ;
   args_info->num_words_given = 0 ;
-  args_info->acrostic_given = 0 ;
-  args_info->interactive_given = 0 ;
   args_info->regex_match_given = 0 ;
-  args_info->count_given = 0 ;
-  args_info->delim_given = 0 ;
-  args_info->random_delimiters_given = 0 ;
-  args_info->valid_delimiters_given = 0 ;
-  args_info->separator_given = 0 ;
-  args_info->case_given = 0 ;
   args_info->verbose_given = 0 ;
 }
 
@@ -107,21 +88,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->max_orig = NULL;
   args_info->num_words_arg = 6;
   args_info->num_words_orig = NULL;
-  args_info->acrostic_arg = NULL;
-  args_info->acrostic_orig = NULL;
-  args_info->interactive_flag = 0;
   args_info->regex_match_arg = NULL;
   args_info->regex_match_orig = NULL;
-  args_info->count_orig = NULL;
-  args_info->delim_arg = gengetopt_strdup (" ");
-  args_info->delim_orig = NULL;
-  args_info->random_delimiters_flag = 0;
-  args_info->valid_delimiters_arg = gengetopt_strdup ("!@#$%^&*()0123456789");
-  args_info->valid_delimiters_orig = NULL;
-  args_info->separator_arg = NULL;
-  args_info->separator_orig = NULL;
-  args_info->case_arg = case_arg_initial;
-  args_info->case_orig = NULL;
   args_info->verbose_flag = 0;
   
 }
@@ -137,16 +105,8 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->min_help = gengetopt_args_info_help[3] ;
   args_info->max_help = gengetopt_args_info_help[4] ;
   args_info->num_words_help = gengetopt_args_info_help[5] ;
-  args_info->acrostic_help = gengetopt_args_info_help[6] ;
-  args_info->interactive_help = gengetopt_args_info_help[7] ;
-  args_info->regex_match_help = gengetopt_args_info_help[8] ;
-  args_info->count_help = gengetopt_args_info_help[9] ;
-  args_info->delim_help = gengetopt_args_info_help[10] ;
-  args_info->random_delimiters_help = gengetopt_args_info_help[11] ;
-  args_info->valid_delimiters_help = gengetopt_args_info_help[12] ;
-  args_info->separator_help = gengetopt_args_info_help[13] ;
-  args_info->case_help = gengetopt_args_info_help[14] ;
-  args_info->verbose_help = gengetopt_args_info_help[15] ;
+  args_info->regex_match_help = gengetopt_args_info_help[6] ;
+  args_info->verbose_help = gengetopt_args_info_help[7] ;
   
 }
 
@@ -241,72 +201,21 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->min_orig));
   free_string_field (&(args_info->max_orig));
   free_string_field (&(args_info->num_words_orig));
-  free_string_field (&(args_info->acrostic_arg));
-  free_string_field (&(args_info->acrostic_orig));
   free_string_field (&(args_info->regex_match_arg));
   free_string_field (&(args_info->regex_match_orig));
-  free_string_field (&(args_info->count_orig));
-  free_string_field (&(args_info->delim_arg));
-  free_string_field (&(args_info->delim_orig));
-  free_string_field (&(args_info->valid_delimiters_arg));
-  free_string_field (&(args_info->valid_delimiters_orig));
-  free_string_field (&(args_info->separator_arg));
-  free_string_field (&(args_info->separator_orig));
-  free_string_field (&(args_info->case_orig));
   
   
 
   clear_given (args_info);
 }
 
-/**
- * @param val the value to check
- * @param values the possible values
- * @return the index of the matched value:
- * -1 if no value matched,
- * -2 if more than one value has matched
- */
-static int
-check_possible_values(const char *val, const char *values[])
-{
-  int i, found, last;
-  size_t len;
-
-  if (!val)   /* otherwise strlen() crashes below */
-    return -1; /* -1 means no argument for the option */
-
-  found = last = 0;
-
-  for (i = 0, len = strlen(val); values[i]; ++i)
-    {
-      if (strncmp(val, values[i], len) == 0)
-        {
-          ++found;
-          last = i;
-          if (strlen(values[i]) == len)
-            return i; /* exact macth no need to check more */
-        }
-    }
-
-  if (found == 1) /* one match: OK */
-    return last;
-
-  return (found ? -2 : -1); /* return many values or none matched */
-}
-
 
 static void
 write_into_file(FILE *outfile, const char *opt, const char *arg, const char *values[])
 {
-  int found = -1;
+  FIX_UNUSED (values);
   if (arg) {
-    if (values) {
-      found = check_possible_values(arg, values);      
-    }
-    if (found >= 0)
-      fprintf(outfile, "%s=\"%s\" # %s\n", opt, arg, values[found]);
-    else
-      fprintf(outfile, "%s=\"%s\"\n", opt, arg);
+    fprintf(outfile, "%s=\"%s\"\n", opt, arg);
   } else {
     fprintf(outfile, "%s\n", opt);
   }
@@ -336,24 +245,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "max", args_info->max_orig, 0);
   if (args_info->num_words_given)
     write_into_file(outfile, "num-words", args_info->num_words_orig, 0);
-  if (args_info->acrostic_given)
-    write_into_file(outfile, "acrostic", args_info->acrostic_orig, 0);
-  if (args_info->interactive_given)
-    write_into_file(outfile, "interactive", 0, 0 );
   if (args_info->regex_match_given)
     write_into_file(outfile, "regex-match", args_info->regex_match_orig, 0);
-  if (args_info->count_given)
-    write_into_file(outfile, "count", args_info->count_orig, 0);
-  if (args_info->delim_given)
-    write_into_file(outfile, "delim", args_info->delim_orig, 0);
-  if (args_info->random_delimiters_given)
-    write_into_file(outfile, "random-delimiters", 0, 0 );
-  if (args_info->valid_delimiters_given)
-    write_into_file(outfile, "valid-delimiters", args_info->valid_delimiters_orig, 0);
-  if (args_info->separator_given)
-    write_into_file(outfile, "separator", args_info->separator_orig, 0);
-  if (args_info->case_given)
-    write_into_file(outfile, "case", args_info->case_orig, cmdline_parser_case_values);
   if (args_info->verbose_given)
     write_into_file(outfile, "verbose", 0, 0 );
   
@@ -1090,18 +983,7 @@ int update_arg(void *field, char **orig_field,
       return 1; /* failure */
     }
 
-  if (possible_values && (found = check_possible_values((value ? value : default_value), possible_values)) < 0)
-    {
-      if (short_opt != '-')
-        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s' (`-%c')%s\n", 
-          package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt, short_opt,
-          (additional_error ? additional_error : ""));
-      else
-        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s'%s\n", 
-          package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt,
-          (additional_error ? additional_error : ""));
-      return 1; /* failure */
-    }
+  FIX_UNUSED (default_value);
     
   if (field_given && *field_given && ! override)
     return 0;
@@ -1118,9 +1000,6 @@ int update_arg(void *field, char **orig_field,
     break;
   case ARG_INT:
     if (val) *((int *)field) = strtol (val, &stop_char, 0);
-    break;
-  case ARG_ENUM:
-    if (val) *((int *)field) = found;
     break;
   case ARG_STRING:
     if (val) {
@@ -1221,15 +1100,7 @@ cmdline_parser_internal (
         { "min",	1, NULL, 'm' },
         { "max",	1, NULL, 'M' },
         { "num-words",	1, NULL, 'n' },
-        { "acrostic",	1, NULL, 'a' },
-        { "interactive",	0, NULL, 'i' },
         { "regex-match",	1, NULL, 'r' },
-        { "count",	1, NULL, 'c' },
-        { "delim",	1, NULL, 'd' },
-        { "random-delimiters",	0, NULL, 'R' },
-        { "valid-delimiters",	1, NULL, 'D' },
-        { "separator",	1, NULL, 's' },
-        { "case",	1, NULL, 'C' },
         { "verbose",	0, NULL, 'v' },
         { 0,  0, 0, 0 }
       };
@@ -1239,7 +1110,7 @@ cmdline_parser_internal (
       custom_opterr = opterr;
       custom_optopt = optopt;
 
-      c = custom_getopt_long (argc, argv, "hVw:m:M:n:a:ir:c:d:RD:s:C:v", long_options, &option_index);
+      c = custom_getopt_long (argc, argv, "hVw:m:M:n:r:v", long_options, &option_index);
 
       optarg = custom_optarg;
       optind = custom_optind;
@@ -1308,28 +1179,6 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'a':	/* Generate passphrases with an acrostic matching ACROSTIC..  */
-        
-        
-          if (update_arg( (void *)&(args_info->acrostic_arg), 
-               &(args_info->acrostic_orig), &(args_info->acrostic_given),
-              &(local_args_info.acrostic_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "acrostic", 'a',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'i':	/* Generate and output a passphrase, query the user to accept it, and loop until one is accepted..  */
-        
-        
-          if (update_arg((void *)&(args_info->interactive_flag), 0, &(args_info->interactive_given),
-              &(local_args_info.interactive_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "interactive", 'i',
-              additional_error))
-            goto failure;
-        
-          break;
         case 'r':	/* Limit passphrases to only include words matching the regex pattern REGEX (e.g. '^[a-z]*$')..  */
         
         
@@ -1338,76 +1187,6 @@ cmdline_parser_internal (
               &(local_args_info.regex_match_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "regex-match", 'r',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'c':	/* Generate COUNT passphrases..  */
-        
-        
-          if (update_arg( (void *)&(args_info->count_arg), 
-               &(args_info->count_orig), &(args_info->count_given),
-              &(local_args_info.count_given), optarg, 0, 0, ARG_INT,
-              check_ambiguity, override, 0, 0,
-              "count", 'c',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'd':	/* Separate words within a passphrase with DELIM..  */
-        
-        
-          if (update_arg( (void *)&(args_info->delim_arg), 
-               &(args_info->delim_orig), &(args_info->delim_given),
-              &(local_args_info.delim_given), optarg, 0, " ", ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "delim", 'd',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'R':	/* Use randomized delimiters between words. --delimiter will be ignored.  */
-        
-        
-          if (update_arg((void *)&(args_info->random_delimiters_flag), 0, &(args_info->random_delimiters_given),
-              &(local_args_info.random_delimiters_given), optarg, 0, 0, ARG_FLAG,
-              check_ambiguity, override, 1, 0, "random-delimiters", 'R',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'D':	/* A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *..  */
-        
-        
-          if (update_arg( (void *)&(args_info->valid_delimiters_arg), 
-               &(args_info->valid_delimiters_orig), &(args_info->valid_delimiters_given),
-              &(local_args_info.valid_delimiters_given), optarg, 0, "!@#$%^&*()0123456789", ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "valid-delimiters", 'D',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 's':	/* Separate generated passphrases with SEP..  */
-        
-        
-          if (update_arg( (void *)&(args_info->separator_arg), 
-               &(args_info->separator_orig), &(args_info->separator_given),
-              &(local_args_info.separator_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "separator", 's',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'C':	/* Choose the method for setting the case of each word in the passphrase..  */
-        
-        
-          if (update_arg( (void *)&(args_info->case_arg), 
-               &(args_info->case_orig), &(args_info->case_given),
-              &(local_args_info.case_given), optarg, cmdline_parser_case_values, "initial", ARG_ENUM,
-              check_ambiguity, override, 0, 0,
-              "case", 'C',
               additional_error))
             goto failure;
         

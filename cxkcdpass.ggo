@@ -15,14 +15,14 @@ ger-anlx (German), eff_large_de_sample.wordlist (German), nor-nb (Norwegian)\
 option "min" m "Generate passphrases containing words with at least MIN_LENGTH characters." int typestr="MIN_LENGTH" default="5" optional
 option "max" M "Generate passphrases containing words with at most MAX_LENGTH characters." int typestr="MAX_LENGTH" default="9" optional
 option "num-words" n "Generate passphrases containing exactly NUM_WORDS words." int typestr="NUM_WORDS" default="6" optional
-option "acrostic" a "Generate passphrases with an acrostic matching ACROSTIC." string typestr="ACROSTIC" optional
-option "interactive" i "Generate and output a passphrase, query the user to accept it, and loop until one is accepted." flag off
+#option "acrostic" a "Generate passphrases with an acrostic matching ACROSTIC." string typestr="ACROSTIC" optional
+#option "interactive" i "Generate and output a passphrase, query the user to accept it, and loop until one is accepted." flag off
 option "regex-match" r "Limit passphrases to only include words matching the regex pattern REGEX (e.g. '^[a-z]*$')." string typestr="REGEX" optional
-option "count" c "Generate COUNT passphrases." int typestr="COUNT" optional
-option "delim" d "Separate words within a passphrase with DELIM." string typestr="DELIM" default=" " optional
-option "random-delimiters" R "Use randomized delimiters between words. --delimiter will be ignored" flag off
-option "valid-delimiters" D "A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *." string typestr="VALID_DELIMITERS" default="!@#$%^&*()0123456789" optional
-option "separator" s "Separate generated passphrases with SEP." string typestr="SEP" optional
-option "case" C "Choose the method for setting the case of each word in the passphrase." values="initial","alternating","upper","lower","random","first","capitalize" enum default="initial" optional
+#option "count" c "Generate COUNT passphrases." int typestr="COUNT" optional
+#option "delim" d "Separate words within a passphrase with DELIM." string typestr="DELIM" default=" " optional
+#option "random-delimiters" R "Use randomized delimiters between words. --delimiter will be ignored" flag off
+#option "valid-delimiters" D "A string with all valid delimiter characters. For example, '^&*' would use ^, &, or *." string typestr="VALID_DELIMITERS" default="!@#$%^&*()0123456789" optional
+#option "separator" s "Separate generated passphrases with SEP." string typestr="SEP" optional
+#option "case" C "Choose the method for setting the case of each word in the passphrase." values="initial","alternating","upper","lower","random","first","capitalize" enum default="initial" optional
 #option "allow-weak-rng" A "Allow fallback to weak RNG if the system does not support cryptographically secure RNG. Only use this if you know what you are doing." flag off
 option "verbose" v "Report various metrics for given options and general verbose output." flag off
