@@ -19,25 +19,40 @@ $ cxkcdpass
 Installation from source is currently the only way to install cxkcdpass, as
 there has been no effort put into making any packages yet.
 
-## Source
+## From source
 
 Requirements for installing from source:
-* gcc/clang
-* not sure if there's anything else. I don't think there is (yet).
+* gcc/clang compatible compiler
+* Windows:
+  * Not yet supported
+* MacOS/BSD:
+  * Nothing, as arc4random is already included
+* Linux
+  * libsodium, for RNG
+    * E.g. `$ sudo apt install libsodium-dev`
 
-If you make changes to `cxkcdpass.ggo` (i.e. the gengetopt config), you'll need
-to have `gengetopt` installed to re-generate `cmdline.h` and `cmdline.c`.
+### Tarball
+
+TODO: As I haven't made any releases yet, there are no tarballs to install from.
+
+### Straight off this git repository
+
+Requires autotools (automake, autoconf, etc)
 
 ```
+$ git clone git@github.com:chrillefkr/cxkcdpass.git && cd cxkcdpass
+$ autoreconf --install
+$ cd build
+$ ../configure
 $ make
-$ # sudo make install
+$ make install
 ```
 
 `make install` doesn't work yet :) sorry!
 
 # Requirements
 
-OS needs to be some modern MacOS/Linux, because of mmap, wordexp, arc4random,
+OS needs to be some modern MacOS/Linux, because of mmap, wordexp,
 etc. until cxkcdpass has been adopted to work on Windows.
 
 Wordlists are not included yet. There are some available for grabs at the
@@ -156,10 +171,21 @@ think I need any help. Though please report any bugs or issues.
 
 There's a `TODO.md` file with things I want to get done.
 
+If you make changes to `cxkcdpass.ggo` (i.e. the gengetopt config), you'll need
+to have `gengetopt` installed to re-generate `cmdline.h` and `cmdline.c`.
+Commandline used: `gengetopt --input=cxkcdpass.ggo --output-dir=./src/`. See
+[pre-build.sh](./pre-build.sh)
+
+Makefile.dev helps you out with this. Invoke with
+
+```
+$ make -f Makefile.dev
+```
+
 # Changelog
 
-* 0.0.1 First MVP working version. Only `--wordfile`, `--min`, `--max` and
-`--numwords` implemented.
+* 0.0.1 First MVP working version. Only `--wordfile`, `--min`, `--max`,
+`--numwords` and `--regex-match` implemented.
 
 # License
 
