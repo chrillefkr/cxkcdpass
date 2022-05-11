@@ -9,6 +9,9 @@ AC_CONFIG_FILES([
  data/bash_completion.d/Makefile
 ])
 
+AC_ARG_ENABLE([docs], AS_HELP_STRING([--disable-docs], [create of documentation files. (Default: no)]), [], [])
+AS_IF([test "x$enable_docs" != xno], [AC_CONFIG_FILES([doc/Makefile])])
+
 # Create --with-libsodium=prefix argument to specify libsodium path for configure script
 AC_ARG_WITH([libsodium],
   [AS_HELP_STRING([--with-libsodium=prefix],
