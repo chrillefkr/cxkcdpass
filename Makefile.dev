@@ -1,0 +1,16 @@
+.PHONY: all
+all: configure src/cmdline.c src/cmdline.h build/Makefile build/src/cxkcdpass
+
+src/cmdline.c src/cmdline.h: cxkcdpass.ggo
+	gengetopt --input=cxkcdpass.ggo --output-dir=./src/
+
+configure: configure.ac Makefile.am **/**/Makefile.am
+	autoreconf --install
+
+build/Makefile: src/*
+	rm -rf build/*
+	cd build && ../configure
+
+build/src/cxkcdpass: build/Makefile
+	make -C build
+	build/src/cxkcdpass
