@@ -1,5 +1,5 @@
 #include <stdio.h> // fprintf()
-#include <stdlib.h> // malloc(), free(), arc4random_uniform() [mac/bsd]
+#include <stdlib.h> // malloc(), free()
 #include <string.h> // strlen(), strdup()
 #include <wordexp.h> // wordexp_t, wordexp(), wordfree()
 #include <sys/stat.h> // stat, fstat()
@@ -9,24 +9,7 @@
 #include <errno.h> // errno
 #include <regex.h> // regex_t, regcomp, regexec, regfree, regerror
 
-#define _RANDOM_METHOD_SODIUM 0
-#define _RANDOM_METHOD_ARC4RANDOM 1
-
-#if defined(__MACH__)
-#define RANDOM_METHOD _RANDOM_METHOD_ARC4RANDOM
-#elif defined(linux) || defined(__linux__)
-// arc4random is included in stdlib BSD/MacOS, and in libbsd for Linux.
-// But I prefer to use sodium instead.
-// #include <bsd/stdlib.h> // arc4random_uniform()
-#define RANDOM_METHOD _RANDOM_METHOD_SODIUM
-#else
-#define RANDOM_METHOD _RANDOM_METHOD_SODIUM
-#endif
-
-#if RANDOM_METHOD == _RANDOM_METHOD_SODIUM
-#define USE_SODIUM 1
-#include <sodium.h>
-#endif
+#include <sodium.h> // randombytes_uniform()
 
 #include "cmdline.h"
 
@@ -41,11 +24,7 @@ size_t linelen(char* line) {
 }
 
 inline int generate_random_number(int num) {
-#if RANDOM_METHOD == _RANDOM_METHOD_ARC4RANDOM
-  return arc4random_uniform(num);
-#elif RANDOM_METHOD == _RANDOM_METHOD_SODIUM
   return randombytes_uniform(num);
-#endif
 }
 
 
@@ -193,7 +172,6 @@ int generate_wordlist(char *addr, size_t length, struct gengetopt_args_info ai, 
       }
       memcpy(line_buffer, line, line_length);
       line_buffer[line_length] = '\0';
-      printf("line_buffer: %s\n", line_buffer);
 
       int ret = regexec(&regex_match_regex, line_buffer, 0, NULL, 0);
       if (ret == REG_NOMATCH) continue;
@@ -214,6 +192,10 @@ int generate_wordlist(char *addr, size_t length, struct gengetopt_args_info ai, 
   if (wordlist_l == 0) {
     fprintf(stderr, "Error: Wordlist has %i words, and we've got 0 after filtering. Can't generate passphrase without words\n", wordlist_line_count);
     free(wordlist);
+    return -1;
+  }
+  if (wordlist_l < ai.num_words_arg) { // TODO: also multiply for --count
+    fprintf(stderr, "Error: Too few words for passphrase. Wordlist has %i words, and we've got %lu after filtering.\n", wordlist_line_count, wordlist_l);
     return -1;
   }
   // wordlist_i--;
@@ -303,12 +285,10 @@ int main(int argc, char* argv[]) {
   if (cmdline_parser(argc, argv, &ai) != 0) {
     return 2;
   }
-  #if USE_SODIUM
   if (sodium_init() < 0) {
     fprintf(stderr, "Fatal: Could not initialize sodium RNG.\n");
     return 1;
   }
-  #endif
   if (validate_options(ai) != 0) {
     return 2;
   }

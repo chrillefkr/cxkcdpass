@@ -50,7 +50,7 @@ mmap for supporting other filetypes than "regular" files on disk
   * Sources such as Wikipedia, etc
 * CI/CD ? Automatically publish to package repositories?
 * Maybe decrease system calls
-  * arc4random_buf ?
+  * randombytes_buf ? + avoid modulo bias
 * Mutliple wordfile support
 * Print entropy stats on verbose
 * Configuration file (/etc/cxkcdpass/cxkcdpass.conf) and --configuration ./eh.conf
