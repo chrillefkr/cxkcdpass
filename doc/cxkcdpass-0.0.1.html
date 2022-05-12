@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2022-05-12" />
+  <title>CXKCDPASS</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">CXKCDPASS</h1>
+<p class="date">May 12, 2022</p>
+</header>
+<h1 id="name">NAME</h1>
+<p>cxkcdpass - generate random passphrases from wordlist(s)</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p><strong>cxkcdpass</strong> [<em>OPTION</em>…]</p>
+<h1 id="description">DESCRIPTION</h1>
+<p>A password generator which generates strong passphrases from
+wordlists, inspired by <a href="https://xkcd.com/936/">XKCD 936</a>.
+Based on <a
+href="https://github.com/redacted/XKCD-password-generator">xkcdpass</a>,
+a Python implementation, whereas <code>cxkcdpass</code> is implemented
+in <code>C</code>, therefore the c in cxkcdpass.</p>
+<pre><code>$ cxkcdpass
+&gt; coroner nutlike sandbank remarry judge yesterday</code></pre>
+<h1 id="options">OPTIONS</h1>
+<dl>
+<dt><strong>-h</strong>, <strong>–help</strong></dt>
+<dd>
+Print help and exit
+</dd>
+<dt><strong>-V</strong>, <strong>–version</strong></dt>
+<dd>
+Print version and exit
+</dd>
+<dt><strong>-w</strong> <em>WORDFILE</em>,
+<strong>–wordfile</strong>=<em>WORDFILE</em></dt>
+<dd>
+Specify that the file <em>WORDFILE</em> contains the list of valid words
+from which to generate passphrases. Multiple wordfiles can be provided.
+Provided wordfiles: <code>eff-long</code>, <code>eff-short</code>,
+<code>eff-special</code>, <code>legacy</code>, <code>spa-mich</code>
+(Spanish), <code>fin-kotus</code> (Finnish), <code>fr-freelang</code>
+(French), <code>fr-corrected.txt</code> (French),
+<code>pt-ipublicis</code> (Portuguese), <code>ita-wiki</code> (Italian),
+<code>ger-anlx</code> (German),
+<code>eff_large_de_sample.wordlist</code> (German), <code>nor-nb</code>
+(Norwegian) (default=<code>eff-long</code>)
+</dd>
+<dt><strong>-m</strong>, <strong>–min</strong>=<em>MIN_LENGTH</em></dt>
+<dd>
+Generate passphrases containing words with at least <em>MIN_LENGTH</em>
+characters.
+</dd>
+<dt><strong>-M</strong>, <strong>–max</strong>=<em>MAX_LENGTH</em></dt>
+<dd>
+Generate passphrases containing words with at most <em>MAX_LENGTH</em>
+characters.
+</dd>
+<dt><strong>-n</strong>,
+<strong>–num-words</strong>=<em>NUM_WORDS</em></dt>
+<dd>
+Generate passphrases containing exactly <em>NUM_WORDS</em> words.
+</dd>
+<dt><strong>-r</strong>,
+<strong>–regex-match</strong>=<em>REGEX</em></dt>
+<dd>
+Limit passphrases to only include words matching the regex pattern
+<em>REGEX</em> (e.g. <code>'\^[a-z]*$'</code>).
+</dd>
+<dt><strong>-v</strong>, <strong>–verbose</strong></dt>
+<dd>
+Report various metrics for given options and general verbose output.
+</dd>
+</dl>
+<h1 id="examples">EXAMPLES</h1>
+<dl>
+<dt><strong>cxkcdpass</strong></dt>
+<dd>
+Prints a random passphrase
+</dd>
+<dt><strong>cxkcdpass -w ./my-list-of-words.txt</strong></dt>
+<dd>
+Prints a random passphrase based on words in ./my-list-of-words.txt
+</dd>
+<dt><strong>cxkcdpass -n 10</strong></dt>
+<dd>
+Prints a random passphrase with 10 words
+</dd>
+</dl>
+<h1 id="bugs">BUGS</h1>
+<p>Report bugs and issues on GitHub: <a
+href="https://github.com/chrillefkr/cxkcdpass/issues">https://github.com/chrillefkr/cxkcdpass/issues</a></p>
+<h1 id="author">AUTHOR</h1>
+<p>Christopher Janzon <a
+href="mailto:git@christopherjanzon.com">git@christopherjanzon.com</a></p>
+<h1 id="copyright-license">COPYRIGHT &amp; LICENSE</h1>
+<p>Copyright © 2022 Christopher Janzon</p>
+<p>This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2, as
+published by Sam Hocevar. See the COPYING file for more details.</p>
+</body>
+</html>

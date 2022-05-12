@@ -1,0 +1,127 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title CXKCDPASS
+May 12, 2022
+@end titlepage
+
+@node Top
+@top CXKCDPASS
+
+@menu
+* NAME::
+* SYNOPSIS::
+* DESCRIPTION::
+* OPTIONS::
+* EXAMPLES::
+* BUGS::
+* AUTHOR::
+* COPYRIGHT & LICENSE::
+@end menu
+
+@node NAME
+@chapter NAME
+@anchor{#name}
+cxkcdpass - generate random passphrases from wordlist(s)
+
+@node SYNOPSIS
+@chapter SYNOPSIS
+@anchor{#synopsis}
+@strong{cxkcdpass} [@emph{OPTION}@dots{}]
+
+@node DESCRIPTION
+@chapter DESCRIPTION
+@anchor{#description}
+A password generator which generates strong passphrases from wordlists,
+inspired by @uref{https://xkcd.com/936/,XKCD 936}. Based on
+@uref{https://github.com/redacted/XKCD-password-generator,xkcdpass}, a
+Python implementation, whereas @code{cxkcdpass} is implemented in
+@code{C}, therefore the c in cxkcdpass.
+
+@verbatim
+$ cxkcdpass
+> coroner nutlike sandbank remarry judge yesterday
+@end verbatim
+
+@node OPTIONS
+@chapter OPTIONS
+@anchor{#options}
+@table @asis
+@item @strong{-h}, @strong{--help}
+
+Print help and exit
+@item @strong{-V}, @strong{--version}
+
+Print version and exit
+@item @strong{-w} @emph{WORDFILE}, @strong{--wordfile}=@emph{WORDFILE}
+
+Specify that the file @emph{WORDFILE} contains the list of valid words
+from which to generate passphrases. Multiple wordfiles can be provided.
+Provided wordfiles: @code{eff-long}, @code{eff-short},
+@code{eff-special}, @code{legacy}, @code{spa-mich} (Spanish),
+@code{fin-kotus} (Finnish), @code{fr-freelang} (French),
+@code{fr-corrected.txt} (French), @code{pt-ipublicis} (Portuguese),
+@code{ita-wiki} (Italian), @code{ger-anlx} (German),
+@code{eff_large_de_sample.wordlist} (German), @code{nor-nb} (Norwegian)
+(default=@code{eff-long})
+@item @strong{-m}, @strong{--min}=@emph{MIN_LENGTH}
+
+Generate passphrases containing words with at least @emph{MIN_LENGTH}
+characters.
+@item @strong{-M}, @strong{--max}=@emph{MAX_LENGTH}
+
+Generate passphrases containing words with at most @emph{MAX_LENGTH}
+characters.
+@item @strong{-n}, @strong{--num-words}=@emph{NUM_WORDS}
+
+Generate passphrases containing exactly @emph{NUM_WORDS} words.
+@item @strong{-r}, @strong{--regex-match}=@emph{REGEX}
+
+Limit passphrases to only include words matching the regex pattern
+@emph{REGEX} (e.g.@ @code{'\^[a-z]*$'}).
+@item @strong{-v}, @strong{--verbose}
+
+Report various metrics for given options and general verbose output.
+@end table
+
+@node EXAMPLES
+@chapter EXAMPLES
+@anchor{#examples}
+@table @asis
+@item @strong{cxkcdpass}
+
+Prints a random passphrase
+@item @strong{cxkcdpass -w ./my-list-of-words.txt}
+
+Prints a random passphrase based on words in ./my-list-of-words.txt
+@item @strong{cxkcdpass -n 10}
+
+Prints a random passphrase with 10 words
+@end table
+
+@node BUGS
+@chapter BUGS
+@anchor{#bugs}
+Report bugs and issues on GitHub:
+@url{https://github.com/chrillefkr/cxkcdpass/issues}
+
+@node AUTHOR
+@chapter AUTHOR
+@anchor{#author}
+Christopher Janzon
+@uref{mailto:git@@christopherjanzon.com,git@@christopherjanzon.com}
+
+@node COPYRIGHT & LICENSE
+@chapter COPYRIGHT & LICENSE
+@anchor{#copyright-license}
+Copyright © 2022 Christopher Janzon
+
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2, as
+published by Sam Hocevar. See the COPYING file for more details.
+
+@bye

@@ -1,0 +1,160 @@
+This is cxkcdpass.info, produced by makeinfo version 4.8 from
+cxkcdpass.texi.
+
+
+File: cxkcdpass.info,  Node: Top,  Next: NAME,  Up: (dir)
+
+CXKCDPASS
+*********
+
+* Menu:
+
+* NAME::
+* SYNOPSIS::
+* DESCRIPTION::
+* OPTIONS::
+* EXAMPLES::
+* BUGS::
+* AUTHOR::
+* COPYRIGHT & LICENSE::
+
+
+File: cxkcdpass.info,  Node: NAME,  Next: SYNOPSIS,  Prev: Top,  Up: Top
+
+1 NAME
+******
+
+cxkcdpass - generate random passphrases from wordlist(s)
+
+
+File: cxkcdpass.info,  Node: SYNOPSIS,  Next: DESCRIPTION,  Prev: NAME,  Up: Top
+
+2 SYNOPSIS
+**********
+
+*cxkcdpass* [_OPTION_...]
+
+
+File: cxkcdpass.info,  Node: DESCRIPTION,  Next: OPTIONS,  Prev: SYNOPSIS,  Up: Top
+
+3 DESCRIPTION
+*************
+
+A password generator which generates strong passphrases from wordlists,
+inspired by XKCD 936 (https://xkcd.com/936/). Based on xkcdpass
+(https://github.com/redacted/XKCD-password-generator), a Python
+implementation, whereas `cxkcdpass' is implemented in `C', therefore
+the c in cxkcdpass.
+
+
+$ cxkcdpass
+> coroner nutlike sandbank remarry judge yesterday
+
+
+File: cxkcdpass.info,  Node: OPTIONS,  Next: EXAMPLES,  Prev: DESCRIPTION,  Up: Top
+
+4 OPTIONS
+*********
+
+*-h*, *-help*
+     Print help and exit
+
+*-V*, *-version*
+     Print version and exit
+
+*-w* _WORDFILE_, *-wordfile*=_WORDFILE_
+     Specify that the file _WORDFILE_ contains the list of valid words
+     from which to generate passphrases. Multiple wordfiles can be
+     provided.  Provided wordfiles: `eff-long', `eff-short',
+     `eff-special', `legacy', `spa-mich' (Spanish), `fin-kotus'
+     (Finnish), `fr-freelang' (French), `fr-corrected.txt' (French),
+     `pt-ipublicis' (Portuguese), `ita-wiki' (Italian), `ger-anlx'
+     (German), `eff_large_de_sample.wordlist' (German), `nor-nb'
+     (Norwegian) (default=`eff-long')
+
+*-m*, *-min*=_MIN_LENGTH_
+     Generate passphrases containing words with at least _MIN_LENGTH_
+     characters.
+
+*-M*, *-max*=_MAX_LENGTH_
+     Generate passphrases containing words with at most _MAX_LENGTH_
+     characters.
+
+*-n*, *-num-words*=_NUM_WORDS_
+     Generate passphrases containing exactly _NUM_WORDS_ words.
+
+*-r*, *-regex-match*=_REGEX_
+     Limit passphrases to only include words matching the regex pattern
+     _REGEX_ (e.g. `'\^[a-z]*$'').
+
+*-v*, *-verbose*
+     Report various metrics for given options and general verbose
+     output.
+
+
+File: cxkcdpass.info,  Node: EXAMPLES,  Next: BUGS,  Prev: OPTIONS,  Up: Top
+
+5 EXAMPLES
+**********
+
+*cxkcdpass*
+     Prints a random passphrase
+
+*cxkcdpass -w ./my-list-of-words.txt*
+     Prints a random passphrase based on words in ./my-list-of-words.txt
+
+*cxkcdpass -n 10*
+     Prints a random passphrase with 10 words
+
+
+File: cxkcdpass.info,  Node: BUGS,  Next: AUTHOR,  Prev: EXAMPLES,  Up: Top
+
+6 BUGS
+******
+
+Report bugs and issues on GitHub:
+`https://github.com/chrillefkr/cxkcdpass/issues'
+
+
+File: cxkcdpass.info,  Node: AUTHOR,  Next: COPYRIGHT & LICENSE,  Prev: BUGS,  Up: Top
+
+7 AUTHOR
+********
+
+Christopher Janzon git@christopherjanzon.com
+(mailto:git@christopherjanzon.com)
+
+
+File: cxkcdpass.info,  Node: COPYRIGHT & LICENSE,  Prev: AUTHOR,  Up: Top
+
+8 COPYRIGHT & LICENSE
+*********************
+
+Copyright © 2022 Christopher Janzon
+
+This work is free. You can redistribute it and/or modify it under the
+terms of the Do What The Fuck You Want To Public License, Version 2, as
+published by Sam Hocevar. See the COPYING file for more details.
+
+
+
+Tag Table:
+Node: Top79
+Node: NAME278
+Ref: #name369
+Node: SYNOPSIS427
+Ref: #synopsis534
+Node: DESCRIPTION561
+Ref: #description677
+Node: OPTIONS1032
+Ref: #options1140
+Node: EXAMPLES2326
+Ref: #examples2429
+Node: BUGS2651
+Ref: #bugs2745
+Node: AUTHOR2829
+Ref: #author2938
+Node: COPYRIGHT & LICENSE3019
+Ref: #copyright-license3141
+
+End Tag Table
