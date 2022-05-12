@@ -8,8 +8,6 @@
   * Include wordlists in installation
   * Figure out how program will know where wordlists are installed
     * Probably https://stackoverflow.com/a/14655291 answers that question
-* Create man pages
-  * Doxygen?
 
 ## Lowest priority, in order
 

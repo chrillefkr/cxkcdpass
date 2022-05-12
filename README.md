@@ -4,14 +4,15 @@ This project is under development. Don't expect anything to actually work.
 
 # cxkcdpass
 
-A password generator which generates strong passphrases, inspired by [XKCD 936](https://xkcd.com/936/).
+A password generator which generates strong passphrases from wordlists, inspired
+by [XKCD 936](https://xkcd.com/936/).
 Based on [xkcdpass](https://github.com/redacted/XKCD-password-generator), a
 Python implementation, whereas `cxkcdpass` is implemented in `C`, therefore the
-c prefix in the name.
+c in cxkcdpass.
 
 ```
 $ cxkcdpass
-> eglantine inken reanxiety subgrade purpuroid kerectomy
+> coroner nutlike sandbank remarry judge yesterday
 ```
 
 # Install

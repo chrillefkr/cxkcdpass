@@ -5,7 +5,7 @@ args "--no-handle-error --include-getopt"
 # Options
 option "wordfile" w "\
 Specify that the file WORDFILE contains the list of valid words from which to \
-generate passphrases. Multiple wordfiles can be provided, separated by commas. \
+generate passphrases. Multiple wordfiles can be provided. \
 Provided wordfiles: eff-long, eff-short, eff-special, legacy, \
 spa-mich (Spanish), fin-kotus (Finnish), fr-freelang (French), \
 fr-corrected.txt (French), pt-ipublicis (Portuguese), ita-wiki (Italian), \
