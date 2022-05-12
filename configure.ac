@@ -20,13 +20,13 @@ AC_ARG_WITH([libsodium],
   [LIBSODIUMPATHSET=0])
 
 # If --with-libsodium is set, include and link to it; otherwise just verify -lsodium
-if test $LIBSODIUMPATHSET = 0 ; then
+AS_IF([test $LIBSODIUMPATHSET = 0], [
   AC_CHECK_LIB([sodium], [randombytes_uniform], , [AC_MSG_ERROR([Missing libsodium. https://github.com/jedisct1/libsodium])])
-else
+], [
   AM_CFLAGS="$AM_CFLAGS -I$with_libsodium/include"
   AM_LDFLAGS="$AM_LDFLAGS -L$with_libsodium/lib"
   LIBS="-lsodium $LIBS"
-fi
+])
 
 AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_LDFLAGS])
