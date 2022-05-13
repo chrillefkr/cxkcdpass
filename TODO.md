@@ -12,6 +12,7 @@
 ## Lowest priority, in order
 
 * Find more things to add to this list
+* Ensure pandoc + pdflatex & texinfo is installed if configured with docs
 * Maybe import wordlists from xkcdpass
   * Ask xkcdpass owner for permission
 * Have multiple methods of reading wordlist, i.e. read(), aio, etc., instead of
@@ -20,6 +21,7 @@ mmap for supporting other filetypes than "regular" files on disk
 * Shell completion
   * bash
     * Fix list of included wordfiles
+    * Add suggestions for enum arguments
   * zsh: https://github.com/zsh-users/zsh-completions/blob/master/zsh-completions-howto.org
 * CLI argument validation
   * Handle if integers are out of range (e.g. below zero)
@@ -44,6 +46,7 @@ mmap for supporting other filetypes than "regular" files on disk
 * Profiling and optimization
 * Reduce binary sizes
 * Support for compressed wordlists
+  * Maybe use https://www.libarchive.org/
 * Wordlist generating scripts
   * Sources such as Wikipedia, etc
 * CI/CD ? Automatically publish to package repositories?
