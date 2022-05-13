@@ -1,32 +1,16 @@
 #include <stdio.h> // fprintf()
 #include <stdlib.h> // malloc(), free()
-#include <string.h> // strlen(), strdup()
+#include <string.h> // strlen(), strdup(), strerror
 #include <wordexp.h> // wordexp_t, wordexp(), wordfree()
 #include <sys/stat.h> // stat, fstat()
 #include <unistd.h> // write()
-#include <sys/mman.h> // mmap()
-#include <fcntl.h> // open(), O_RDONLY
 #include <errno.h> // errno
-#include <regex.h> // regex_t, regcomp, regexec, regfree, regerror
-
-#include <sodium.h> // randombytes_uniform()
+#include <sys/mman.h> // mmap(), munmap()
 
 #include "cmdline.h"
-
-#define WORDLIST_PREALLOC_SIZE 1024
-#define LINE_BUFFER_PREALLOC_SIZE 128
-#define MIN(a,b) (((a)<(b))?(a):(b))
-
-size_t linelen(char* line) {
-  size_t i = 0;
-  while (line[i] != '\n') i++;
-  return i;
-}
-
-inline int generate_random_number(int num) {
-  return randombytes_uniform(num);
-}
-
+#include "common.h" // linelen()
+#include "random.h"
+#include "wordlist.h"
 
 int validate_options(struct gengetopt_args_info ai) {
   if (ai.max_arg < ai.min_arg) {
@@ -81,7 +65,7 @@ char* locate_wordfile(char* wordfile, struct gengetopt_args_info ai) {
 
   // TODO: Also try for ./static folder
 
-  const char common_word_files[4][35] = {
+  const char* common_word_files[4] = {
     "/usr/share/cracklib/cracklib-small",
     "/usr/share/dict/cracklib-small",
     "/usr/dict/words",
@@ -94,178 +78,6 @@ char* locate_wordfile(char* wordfile, struct gengetopt_args_info ai) {
   }
 
   return NULL;
-}
-
-struct mmap_wordfile_t {
-  struct stat sb;
-  char* addr;
-  size_t length;
-};
-
-int mmap_wordfile(char* wordfile, struct mmap_wordfile_t *mw) {
-  int fd = open(wordfile, O_RDONLY);
-  if (fd == -1) {
-    fprintf(stderr, "Error: Could not open '%s' for reading: %s\n", wordfile, strerror(errno));
-    return -1;
-  }
-  struct stat sb;
-  if (fstat(fd, &sb) == -1) {
-    fprintf(stderr, "Error: Could not fstat '%s': %s\n", wordfile, strerror(errno));
-    return -1;
-  }
-  char* addr = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-  if (addr == MAP_FAILED) {
-    fprintf(stderr, "Error: Could not mmap '%s': %s\n", wordfile, strerror(errno));
-    return -1;
-  }
-  mw->sb = sb;
-  mw->addr = addr;
-  mw->length = sb.st_size;
-  return 0;
-}
-
-struct wordlist_t {
-  size_t length;
-  char** lines;
-};
-int generate_wordlist(char *addr, size_t length, struct gengetopt_args_info ai, struct wordlist_t *wl) {
-  int wordlist_line_count = 0;
-  size_t hypothetical_max_words = length / 2;
-  // write(STDOUT_FILENO, addr, length);
-  size_t wordlist_l = MIN(hypothetical_max_words, WORDLIST_PREALLOC_SIZE);
-  char** wordlist = (char**)malloc(wordlist_l * sizeof(char*));
-  size_t wordlist_i = 0;
-
-  size_t line_buffer_size = LINE_BUFFER_PREALLOC_SIZE;
-  char *line_buffer = NULL;
-  regex_t regex_match_regex;
-  if (ai.regex_match_given) {
-    int ret = regcomp(&regex_match_regex, ai.regex_match_arg, 0);
-    if (ret) {
-        fprintf(stderr, "Error: Could not compile regex\n");
-        return -1;
-    }
-
-    line_buffer = (char*) malloc(line_buffer_size * sizeof(char));
-  }
-
-  char* last_lb = (char*) addr;
-  for (int i = 0; i < length; i++) {
-    char c = addr[i];
-    if (i != length && c != '\n') continue;
-    char* line = last_lb;
-    last_lb = &addr[i + 1];
-
-    wordlist_line_count++;
-
-    // filter
-    size_t line_length = linelen(line);
-    if (line_length > ai.max_arg) continue;
-    if (line_length < ai.min_arg) continue;
-
-    if (ai.regex_match_given) {
-      if (line_length + 1 > line_buffer_size) {
-        do {
-        line_buffer_size *= 2;
-        } while(line_length + 1 > line_buffer_size);
-        line_buffer = (char*) realloc((void*) line_buffer, line_buffer_size * sizeof(char));
-      }
-      memcpy(line_buffer, line, line_length);
-      line_buffer[line_length] = '\0';
-
-      int ret = regexec(&regex_match_regex, line_buffer, 0, NULL, 0);
-      if (ret == REG_NOMATCH) continue;
-    }
-
-    if (wordlist_i == wordlist_l) {
-      wordlist_l *= 2;
-      wordlist = (char**)realloc(wordlist, wordlist_l * sizeof(char**));
-    }
-    wordlist[wordlist_i++] = line;
-    // TODO: for acrostic, add to array of pointers to each initial character
-
-    // write(STDOUT_FILENO, last_lb, linelen(last_lb));
-  }
-  if (line_buffer) free(line_buffer);
-
-  wordlist_l = (wordlist_i);
-  if (wordlist_l == 0) {
-    fprintf(stderr, "Error: Wordlist has %i words, and we've got 0 after filtering. Can't generate passphrase without words\n", wordlist_line_count);
-    free(wordlist);
-    return -1;
-  }
-  if (wordlist_l < ai.num_words_arg) { // TODO: also multiply for --count
-    fprintf(stderr, "Error: Too few words for passphrase. Wordlist has %i words, and we've got %lu after filtering.\n", wordlist_line_count, wordlist_l);
-    return -1;
-  }
-  // wordlist_i--;
-  wordlist = (char**)realloc(wordlist, (wordlist_l + 1) * sizeof(char**));
-  wordlist[wordlist_l] = NULL;
-  if (ai.verbose_given) fprintf(stderr, "Info: Wordlist has %i words, and we've got %lu after filtering\n", wordlist_line_count, wordlist_l);
-  wl->lines = wordlist;
-  wl->length = wordlist_l;
-  return 0;
-}
-
-int generate_wordlist2(char* wordfile, struct gengetopt_args_info ai) {
-  int fd = open(wordfile, O_RDONLY);
-  if (fd == -1) {
-    fprintf(stderr, "Error: Could not open '%s' for reading: %s\n", wordfile, strerror(errno));
-    return -1;
-  }
-  struct stat sb;
-  if (fstat(fd, &sb) == -1) {
-    fprintf(stderr, "Error: Could not fstat '%s': %s\n", wordfile, strerror(errno));
-    return -1;
-  }
-  char* addr = mmap(NULL, sb.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-  if (addr == MAP_FAILED) {
-    fprintf(stderr, "Error: Could not mmap '%s': %s\n", wordfile, strerror(errno));
-    return -1;
-  }
-  size_t hypothetical_max_words = sb.st_size / 2;
-  #define WORDLIST_PREALLOC_SIZE 1024
-  // write(STDOUT_FILENO, addr, sb.st_size);
-  #define MIN(a,b) (((a)<(b))?(a):(b))
-  size_t wordlist_l = MIN(hypothetical_max_words, WORDLIST_PREALLOC_SIZE);
-  char** wordlist = (char**)malloc(wordlist_l * sizeof(char*));
-  size_t wordlist_i = 0;
-
-  char* last_lb = (char*) addr;
-  for (int i = 0; i < sb.st_size; i++) {
-    char c = addr[i];
-    if (i != sb.st_size && c != '\n') continue;
-    if (wordlist_i == wordlist_l) {
-      wordlist_l *= 2;
-      wordlist = (char**)realloc(wordlist, wordlist_l * sizeof(char**));
-    }
-    wordlist[wordlist_i++] = last_lb;
-    // TODO: for acrostic, add to array of pointers to each initial character
-    // write(STDOUT_FILENO, last_lb, linelen(last_lb));
-    last_lb = &addr[i + 1];
-
-  }
-  wordlist_l = (wordlist_i);
-  // wordlist_i--;
-  wordlist = (char**)realloc(wordlist, wordlist_l * sizeof(char**));
-  fprintf(stderr, "Info: Found %lu words in wordlist\n", wordlist_l);
-
-  for (size_t i = 0; i < wordlist_l; i++) {
-    // Filter
-  }
-
-  munmap(addr, sb.st_size);
-  return 0;
-}
-
-int* get_random_choices(int min_amount, int max_amount, int min_value, int max_value){
-  int a_diff = max_amount - min_amount;
-  int v_diff = max_value - min_value;
-  int amount = min_amount + (a_diff == 0 ? 0 : generate_random_number(a_diff));
-  int* out = (int*) malloc((amount + 1) * sizeof(int));
-  for (int i = 0; i < amount; i++) out[i] = min_value + (v_diff == 0 ? 0 : generate_random_number(v_diff));
-  out[amount] = -1;
-  return out;
 }
 
 int print_passphrase(int* wordlist_choices, char** wordlist, char* delimiters) {
@@ -285,8 +97,8 @@ int main(int argc, char* argv[]) {
   if (cmdline_parser(argc, argv, &ai) != 0) {
     return 2;
   }
-  if (sodium_init() < 0) {
-    fprintf(stderr, "Fatal: Could not initialize sodium RNG.\n");
+  if (initialize_random() != 0) {
+    fprintf(stderr, "Fatal: Could not initialize RNG.\n");
     return 1;
   }
   if (validate_options(ai) != 0) {
@@ -304,7 +116,7 @@ int main(int argc, char* argv[]) {
   }
   free(wordfile);
   struct wordlist_t wl;
-  if (generate_wordlist(mw.addr, mw.length, ai, &wl) != 0) {
+  if (generate_wordlist_from_memory(mw.addr, mw.length, ai, &wl) != 0) {
     return 1;
   }
   int* wordlist_choices = get_random_choices(ai.num_words_arg, ai.num_words_arg, 0, wl.length);
