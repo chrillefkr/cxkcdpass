@@ -76,51 +76,28 @@ Output from running `$ cxkcdpass --help`:
 Usage: cxkcdpass [OPTION]...
 Generate random passphrases from a wordfile
 
-  -h, --help                    Print help and exit
-  -V, --version                 Print version and exit
-  -w, --wordfile=WORDFILE       Specify that the file WORDFILE contains the
-                                  list of valid words from which to generate
-                                  passphrases. Multiple wordfiles can be
-                                  provided, separated by commas. Provided
-                                  wordfiles: eff-long, eff-short, eff-special,
-                                  legacy, spa-mich (Spanish), fin-kotus
-                                  (Finnish), fr-freelang (French),
-                                  fr-corrected.txt (French), pt-ipublicis
-                                  (Portuguese), ita-wiki (Italian), ger-anlx
-                                  (German), eff_large_de_sample.wordlist
-                                  (German), nor-nb (Norwegian)
-                                  (default=`eff-long')
-  -m, --min=MIN_LENGTH          Generate passphrases containing words with at
-                                  least MIN_LENGTH characters.  (default=`5')
-  -M, --max=MAX_LENGTH          Generate passphrases containing words with at
-                                  most MAX_LENGTH characters.  (default=`9')
-  -n, --num-words=NUM_WORDS     Generate passphrases containing exactly
-                                  NUM_WORDS words.  (default=`6')
-  -a, --acrostic=ACROSTIC       Generate passphrases with an acrostic matching
-                                  ACROSTIC.
-  -i, --interactive             Generate and output a passphrase, query the
-                                  user to accept it, and loop until one is
-                                  accepted.  (default=off)
-  -r, --regex-match=REGEX       Limit passphrases to only include words
-                                  matching the regex pattern REGEX (e.g.
-                                  '^[a-z]*$').
-  -c, --count=COUNT             Generate COUNT passphrases.
-  -d, --delim=DELIM             Separate words within a passphrase with DELIM.
-                                  (default=` ')
-  -R, --random-delimiters       Use randomized delimiters between words.
-                                  --delimiter will be ignored  (default=off)
-  -D, --valid-delimiters=VALID_DELIMITERS
-                                A string with all valid delimiter characters.
-                                  For example, '^&*' would use ^, &, or *.
-                                  (default=`!@#$%^&*()0123456789')
-  -s, --sep=SEP                 Separate generated passphrases with SEP.
-  -C, --case=ENUM               Choose the method for setting the case of each
-                                  word in the passphrase.  (possible
-                                  values="initial", "alternating",
-                                  "upper", "lower", "random", "first",
-                                  "capitalize" default=`initial')
-  -v, --verbose                 Report various metrics for given options.
-                                  (default=off)
+  -h, --help                 Print help and exit
+  -V, --version              Print version and exit
+  -w, --wordfile=WORDFILE    Specify that the file WORDFILE contains the list
+                               of valid words from which to generate
+                               passphrases. Multiple wordfiles can be provided.
+                               Provided wordfiles: eff-long, eff-short,
+                               eff-special, legacy, spa-mich (Spanish),
+                               fin-kotus (Finnish), fr-freelang (French),
+                               fr-corrected.txt (French), pt-ipublicis
+                               (Portuguese), ita-wiki (Italian), ger-anlx
+                               (German), eff_large_de_sample.wordlist (German),
+                               nor-nb (Norwegian)  (default=`eff-long')
+  -m, --min=MIN_LENGTH       Generate passphrases containing words with at
+                               least MIN_LENGTH characters.  (default=`5')
+  -M, --max=MAX_LENGTH       Generate passphrases containing words with at most
+                               MAX_LENGTH characters.  (default=`9')
+  -n, --num-words=NUM_WORDS  Generate passphrases containing exactly NUM_WORDS
+                               words.  (default=`6')
+  -r, --regex-match=REGEX    Limit passphrases to only include words matching
+                               the regex pattern REGEX (e.g. '^[a-z]*$').
+  -v, --verbose              Report various metrics for given options and
+                               general verbose output.  (default=off)
 ```
 
 # Performance

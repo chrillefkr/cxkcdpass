@@ -35,7 +35,7 @@ const char *gengetopt_args_info_description = "";
 const char *gengetopt_args_info_help[] = {
   "  -h, --help                 Print help and exit",
   "  -V, --version              Print version and exit",
-  "  -w, --wordfile=WORDFILE    Specify that the file WORDFILE contains the list\n                               of valid words from which to generate\n                               passphrases. Multiple wordfiles can be provided,\n                               separated by commas. Provided wordfiles:\n                               eff-long, eff-short, eff-special, legacy,\n                               spa-mich (Spanish), fin-kotus (Finnish),\n                               fr-freelang (French), fr-corrected.txt (French),\n                               pt-ipublicis (Portuguese), ita-wiki (Italian),\n                               ger-anlx (German), eff_large_de_sample.wordlist\n                               (German), nor-nb (Norwegian)\n                               (default=`eff-long')",
+  "  -w, --wordfile=WORDFILE    Specify that the file WORDFILE contains the list\n                               of valid words from which to generate\n                               passphrases. Multiple wordfiles can be provided.\n                               Provided wordfiles: eff-long, eff-short,\n                               eff-special, legacy, spa-mich (Spanish),\n                               fin-kotus (Finnish), fr-freelang (French),\n                               fr-corrected.txt (French), pt-ipublicis\n                               (Portuguese), ita-wiki (Italian), ger-anlx\n                               (German), eff_large_de_sample.wordlist (German),\n                               nor-nb (Norwegian)  (default=`eff-long')",
   "  -m, --min=MIN_LENGTH       Generate passphrases containing words with at\n                               least MIN_LENGTH characters.  (default=`5')",
   "  -M, --max=MAX_LENGTH       Generate passphrases containing words with at most\n                               MAX_LENGTH characters.  (default=`9')",
   "  -n, --num-words=NUM_WORDS  Generate passphrases containing exactly NUM_WORDS\n                               words.  (default=`6')",
@@ -1131,7 +1131,7 @@ cmdline_parser_internal (
           cmdline_parser_free (&local_args_info);
           exit (EXIT_SUCCESS);
 
-        case 'w':	/* Specify that the file WORDFILE contains the list of valid words from which to generate passphrases. Multiple wordfiles can be provided, separated by commas. Provided wordfiles: eff-long, eff-short, eff-special, legacy, spa-mich (Spanish), fin-kotus (Finnish), fr-freelang (French), fr-corrected.txt (French), pt-ipublicis (Portuguese), ita-wiki (Italian), ger-anlx (German), eff_large_de_sample.wordlist (German), nor-nb (Norwegian).  */
+        case 'w':	/* Specify that the file WORDFILE contains the list of valid words from which to generate passphrases. Multiple wordfiles can be provided. Provided wordfiles: eff-long, eff-short, eff-special, legacy, spa-mich (Spanish), fin-kotus (Finnish), fr-freelang (French), fr-corrected.txt (French), pt-ipublicis (Portuguese), ita-wiki (Italian), ger-anlx (German), eff_large_de_sample.wordlist (German), nor-nb (Norwegian).  */
         
         
           if (update_arg( (void *)&(args_info->wordfile_arg), 
