@@ -9,8 +9,10 @@ configure: configure.ac Makefile.am **/**/Makefile.am
 
 build/Makefile: src/*
 	rm -rf build/*
-	cd build && ../configure
+	cd build && ../configure --enable-tests --enable-docs --disable-gprof
 
 build/src/cxkcdpass: build/Makefile
 	make -C build
+	make -C build check
+	make -C build/tests check-valgrind
 	build/src/cxkcdpass

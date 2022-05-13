@@ -1,13 +1,18 @@
 AC_INIT([cxkcdpass],[0.0.1],[git@christopherjanzon.com],[],[https://github.com/chrillefkr/cxkcdpass])
 
+AC_CONFIG_MACRO_DIR([m4])
+
 AM_INIT_AUTOMAKE([foreign])
 AC_PROG_CC
+
+#AM_CFLAGS="$AM_CFLAGS -Wall -Werror"
 
 AC_CONFIG_FILES([
  Makefile
  src/Makefile
  doc/Makefile
  data/bash_completion.d/Makefile
+ tests/Makefile
 ])
 
 
@@ -47,6 +52,36 @@ AS_IF([test $LIBSODIUMPATHSET = 0], [
   AM_LDFLAGS="$AM_LDFLAGS -L$with_libsodium/lib"
   LIBS="-lsodium $LIBS"
 ])
+
+
+dnl Enable gprof profiling build
+AC_ARG_ENABLE([gprof], AS_HELP_STRING([--enable-gprof], [compile with -pg flag for gprof. (Default: no)]), [
+  AS_IF([test "x$enable_gprof" != xno], [
+    AM_CFLAGS="-pg $AM_CFLAGS"
+  ])
+], [])
+
+dnl Enable tests
+AC_ARG_ENABLE([tests], AS_HELP_STRING([--enable-tests], [enable tests. (Default: no)]), [
+  AS_CASE(["$enableval"],
+    [yes], [tests=true],
+    [no], [tests=false],
+    [AC_MSG_ERROR([bad value ${enableval} for --enable-tests])])
+  AS_IF([test "x$enable_tests" != xno], [
+    PKG_CHECK_MODULES([CHECK], [check >= 0.9.10], [], [])
+    AS_IF([test "x$pkg_failed" != xno], [
+      AC_MSG_ERROR([You need check installed to run tests])
+    ])
+  ])
+], [tests=false])
+AM_CONDITIONAL([TESTS], [test "x$tests" = xtrue])
+
+dnl Enable valgrind checks, see m4/ax_valgrind_check.m4
+AX_VALGRIND_DFLT([memcheck], [on])
+AX_VALGRIND_CHECK
+
+AC_SUBST([CHECK_CFLAGS])
+AC_SUBST([CHECK_LIBS])
 
 AC_SUBST([AM_CFLAGS])
 AC_SUBST([AM_LDFLAGS])
